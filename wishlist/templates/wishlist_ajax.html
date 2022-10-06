@@ -14,14 +14,16 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-        <title>Wishlist</title>        
+        <title>Wishlist App</title>        
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-primary bg-pink justify-content-center">
-            <div class="navbar-nav mr-auto"
-                <a class="navbar-brand" href="#">{{nama}}</a>
+            <div class="navbar-nav mr-auto">
+                <a class="navbar-brand" href="#">Wishlist</a>
             </div>
-    
+            <div class = "mx-auto orderr-0">
+                <a class=""nav-link" href=""">Home</a>"
+            </div>
             <div class="navbar-nav ml-auto">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
@@ -39,20 +41,27 @@
                     <th>Nama Barang</th>
                     <th>Harga Barang</th>
                     <th>Deskripsi</th>
-                    </tr>
+                    </thread>
                     {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
-                    {% for barang in list_barang %}
-                    <tr>
-                        <th>{{barang.nama_barang}}</th>
-                        <th>{{barang.harga_barang}}</th>
-                        <th>{{barang.deskripsi}}</th>
-                    </tr>
-                    {% endfor %}
+                    <tbody id="table-body"></tbody>
               </table>
             </div>
         </div>
-        <h5 class="text-center"
-        >Sesi terakhir login: {{ last_login }}</h5>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+    $.get('/wishlist/json', function (data) {
+    data.map((singleData) =>
+        $('#table-body').append(`<tr>
+    <td>${singleData.fields.nama_barang}</td>
+    <td>${singleData.fields.harga_barang}</td>
+    <td>${singleData.fields.deskripsi}</td>
+</tr>`)
+    );
+    });
+});
+</script>
+        <h5>Sesi terakhir login: {{ last_login }}</h5>
         
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -62,47 +71,4 @@
         {% endblock content %}
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        function postAjax(any) {any.preventDefault()
-        const namaBarang = $("#nama_barang").val()
-        const hargaBarang = $("#harga_barang").val()
-        const deskripsi = $("#deskripsi").val()
-        const data = {nama_barang: namaBarang, harga_barang: hargaBarang, deskripsi, csrfmiddlewaretoken: "{{ csrf_token }}"
-    }
-    
-        $.ajax({type: 'POST', url: "{% url 'wishlist:create_wishlist' %}", data: data, 
-          success: () => {
-            alert("Done!")
-            fetch()
-          },
-          dataType: 'json'
-        });
-        }
-    
-        async function refreshWishlist (data) {
-            const table = $("#tbl")
-            table.empty()
-            for (let i = 0; i < data.length; i++) {
-            table.append(`
-                <tr>
-                <td>${data[i].fields.nama_barang}</td>
-                <td>${data[i].fields.harga_barang}</td>
-                <td>${data[i].fields.deskripsi}</td>
-                </tr> `)
-            }
-        }
-    
-      function fetch() {
-        $.get("/wishlist/json", refreshWishlist)
-      }
-    
-      $(document).ready(() => {
-        $("#TombolBaru").click(postAjax)
-        fetch()
-      })
-    
-    </script>
-    
-    
-    {% endblock content %}
 </html>
