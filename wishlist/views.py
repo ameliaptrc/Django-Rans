@@ -93,4 +93,8 @@ def create_wishlist(request):
         new_barang.save()
         return HttpResponse(serializers.serialize("json", [new_barang]), content_type="application/json",)
 
+<<<<<<< HEAD
     return HttpResponse("Invalid method", status_code=405)
+=======
+    return HttpResponse("Invalid method", status_code=405)
+>>>>>>> 92d75e360921d5e26ea11d77e29f198bc5189525
